@@ -1,0 +1,20 @@
+.body{ 
+    width: 500px; 
+    height: 100px; 
+}
+
+.body:hover > .title{ 
+    color: gray;
+}
+.body:hover > .line{ 
+    background-color: gray;
+}
+.title{
+    margin-bottom: 10px;
+}
+
+.line{
+    width: 500px;
+    height: 3px; 
+    background-color: black;
+}

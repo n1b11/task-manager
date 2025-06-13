@@ -1,0 +1,112 @@
+
+.taskContainer{
+    padding:5px;
+
+}
+
+.task{
+    display: flex;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width:180px;
+    position: relative;
+    
+}
+
+.checkbox{
+}
+.label{
+    margin-left:10px;
+}
+
+
+.createContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.create{
+    padding:5px;
+    background-color: var(--background);
+    width:100px;
+    border-radius: 5px;
+    margin-top: 25px;
+}
+
+
+.create:hover{
+    border: 2px solid gray;
+    color:gray;
+}
+
+.titleInput{
+    margin-bottom:16px;
+    margin-Top:16px;
+    height:20px;
+    padding: 2px;
+    width: 90%;
+}
+
+.createCheck{ 
+    margin-right: 5px;
+    height: 15px;
+    width: 15px;
+}
+
+.inputLine{
+    margin-top: 10px;
+}
+.add{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    border: 0px solid black;
+}
+.line{
+    height:2px; 
+    width: 40%;
+    background-color: var(--foreground);
+    margin: 5px;
+}
+
+.add:hover>.line{
+    background-color: gray;
+}
+
+.add:hover>.plus{
+    color: gray;
+    font-size: 20px;
+}
+.plus{
+    font-size: 20px;
+}
+
+.taskInput{
+    margin-left: 10px;
+}
+
+.label{ 
+    width:180px;
+}
+
+.delete{
+    position: absolute;
+    top: -4px;
+    right: 0px;
+    font-size: 20px;;
+    opacity: 0;
+  visibility: visible;
+  padding-bottom: 10px;
+  color:blue;
+
+}
+
+.delete:hover{
+    opacity: 100;
+  visibility: visible;
+  cursor: pointer;
+  border-radius: 10px;;
+    
+}
