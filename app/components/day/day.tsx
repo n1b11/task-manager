@@ -1,13 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./day.module.css";
 import Category from "../category-card/category";
 
 export default function Day({ title, allTasks, setAllTasks, date }) {
-  console.log("AAl", allTasks);
   const taskArray = Object.values(allTasks);
   const selectedTasks = taskArray.filter((el) => {
     const taskDate = new Date(el.day);
-    console.log(taskDate.toDateString(), date.toDateString());
     return taskDate.toDateString() === date.toDateString();
   });
 
@@ -21,11 +19,12 @@ export default function Day({ title, allTasks, setAllTasks, date }) {
       isNew: false,
     };
   });
-
   const [categories, setCategories] = useState(allCategories);
   const onClick = () => {
     setCategories([...categories, { title: "new category", isNew: true }]);
   };
+  console.log(allTasks);
+  console.log(Object.values(allTasks));
   return (
     <div className={styles.body}>
       <h1 className={styles.Title}>{title}</h1>
@@ -40,7 +39,6 @@ export default function Day({ title, allTasks, setAllTasks, date }) {
               setCategories={setCategories}
               categories={categories}
               date={date}
-              selectedTasks={selectedTasks}
               allTasks={allTasks}
               setAllTasks={setAllTasks}
             />

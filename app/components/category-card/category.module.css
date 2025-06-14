@@ -19,6 +19,8 @@
 
 .taskContainer{
     padding:5px;
+    min-height: 150px;
+
 
 }
 
@@ -116,4 +118,11 @@
 .delete:hover{
     opacity: 100;
     cursor: pointer;
+}
+
+.over{
+    margin:5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    box-sizing: border-box;
 }

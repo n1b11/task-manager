@@ -29,7 +29,7 @@ export const createTask = async (day, name, category) => {
     }
   };
 
-export  const updateTask = async (name, checked, id) => {
+export  const updateTask = async (name, checked, id, category, date) => {
   try {
     const response = await fetch(`/api/tasks?id=${id}`, {
       method: 'PUT',
@@ -38,7 +38,9 @@ export  const updateTask = async (name, checked, id) => {
       },
       body: JSON.stringify({
         name: name,
-        checked:checked
+        checked:checked, 
+        category:category, 
+        date:date
       }),
     });
 

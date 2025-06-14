@@ -1,7 +1,6 @@
 
 .taskContainer{
     padding:5px;
-
 }
 
 .task{
@@ -10,9 +9,16 @@
     margin-top: 10px;
     width:180px;
     position: relative;
+    background-color: white;
+    z-index:  2;
+    
     
 }
 
+.dragging{
+    z-index:  999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
 .checkbox{
 }
 .label{

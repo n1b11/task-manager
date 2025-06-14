@@ -47,7 +47,7 @@ export async function PUT(request: Request) {
     const { searchParams } = new URL(request.url);
     const updateId = searchParams.get('id');
 
-    const { name: updateName, checked: updateChecked } = await request.json(); // Get body
+    const { name: updateName, checked: updateChecked, category:updateCategory, date:updateDate} = await request.json(); // Get body
 
     if (!updateId) {
       return NextResponse.json({ error: 'Task ID is required' }, { status: 400 });
@@ -60,8 +60,8 @@ export async function PUT(request: Request) {
     }
 
     const updateResult = await db.run(
-      'UPDATE tasks SET name = ?, checked = ? WHERE id = ?',
-      [updateName, updateChecked, updateId]
+      'UPDATE tasks SET name = ?, checked = ?, category = ?, day = ? WHERE id = ?',
+      [updateName, updateChecked, updateCategory, updateDate, updateId]
     );
 
     if (updateResult.changes === 0) {

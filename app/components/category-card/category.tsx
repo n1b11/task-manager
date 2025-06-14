@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./category.module.css";
 import Task from "../task/task";
 import { createTask, deleteTask, updateTask } from "@/db/methods";
+import { useDroppable } from "@dnd-kit/core";
 export default function Category({
   title,
   end,
@@ -12,13 +13,23 @@ export default function Category({
   date,
   allTasks,
   setAllTasks,
-  selectedTasks,
 }) {
-  const categoryTasks = selectedTasks.filter((el) => {
-    return el.category === categories[idx].title;
-  });
-  console.log("cat", categoryTasks);
-  const [tasks, setTasks] = useState(categoryTasks);
+  const [categoryTasks, setCategoryTasks] = useState([]);
+
+  useEffect(() => {
+    console.log("trigger");
+    const taskVals = Object.values(allTasks);
+    const filtered = taskVals.filter((el) => {
+      console.log(el, categories[idx]);
+      const elDate = new Date(el.day);
+      return (
+        el.category === categories[idx].title &&
+        elDate.toDateString() === date.toDateString()
+      );
+    });
+    setCategoryTasks(filtered);
+  }, [allTasks, categories, idx, date]);
+
   const [isWeekChecked, setIsWeekChecked] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [editTask, setEditTask] = useState(null);
@@ -45,21 +56,24 @@ export default function Category({
   };
 
   const onAdd = async (e) => {
-    console.log("Category component: date prop for createTask:", date);
+    console.log("add");
     e.stopPropagation();
+    console.log(editTask);
     if (editTask === null) {
+      console.log("in add");
       setEditTask(0);
       const newTask = await createTask(date, " ", categories[idx].title);
-      console.log(newTask);
       const taskObj = { ...allTasks };
       taskObj[newTask.id] = newTask;
-      setTasks([newTask, ...tasks]);
       setAllTasks(taskObj);
     }
   };
   const remove = () => {
-    tasks.forEach((element) => {
+    categoryTasks.forEach((element) => {
       deleteTask(element.id);
+      const taskObj = { ...allTasks };
+      delete taskObj[element.id];
+      setAllTasks(taskObj);
     });
     const newList = categories.filter((_, i) => i !== idx);
     setCategories(newList);
@@ -70,10 +84,13 @@ export default function Category({
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
+      console.log("outside click", taskRef.current);
       if (taskRef.current && !taskRef.current.contains(e.target)) {
+        console.log("inside");
         if (editTask != null) {
-          const task = tasks[editTask];
-          updateTask(task.name, task.checked, task.id);
+          const task = categoryTasks[editTask];
+          console.log("day", task.day);
+          updateTask(task.name, task.checked, task.id, task.category, task.day);
         }
         setEditTask(null);
       }
@@ -83,7 +100,18 @@ export default function Category({
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [tasks]);
+  }, [categoryTasks]);
+  const { setNodeRef, isOver } = useDroppable({
+    id: idx,
+    data: {
+      category: categories[idx].title,
+      date: date,
+    },
+  });
+
+  const className = isOver
+    ? `${styles.over} ${styles.taskContainer}`
+    : styles.taskContainer;
 
   if (categories[idx].isNew) {
     return (
@@ -93,8 +121,8 @@ export default function Category({
             className={styles.titleInput}
             onChange={handleTitleChange}
           ></input>
-          <div className={styles.delete} onClick={remove}>
-            x
+          <div className={styles.delete} onClick={(e) => remove(e)}>
+            —
           </div>
         </div>
         <div className={styles.taskContainer}>
@@ -132,17 +160,17 @@ export default function Category({
       <div className={styles.titleContainer}>
         <h3 className={styles.title}>{title}</h3>
         <div className={styles.delete} onClick={remove}>
-          x
+          —
         </div>
       </div>
-      <div className={styles.taskContainer}>
+      <div className={className} ref={setNodeRef}>
         <button className={styles.add} onClick={(e) => onAdd(e)}>
           <div className={styles.line}></div>
           <div className={styles.plus}>+</div>
           <div className={styles.line}></div>
         </button>
-        {tasks.map((el, idx) => {
-          const refProps = editTask === idx ? { ref: taskRef } : {};
+        {categoryTasks.map((el, idx) => {
+          let refProps = editTask === idx ? { ref: taskRef } : false;
           return (
             <Task
               el={el}
@@ -150,8 +178,7 @@ export default function Category({
               editTask={editTask}
               setEditTask={setEditTask}
               idx={idx}
-              tasks={tasks}
-              setTasks={setTasks}
+              tasks={categoryTasks}
               allTasks={allTasks}
               setAllTasks={setAllTasks}
             />
