@@ -4,8 +4,10 @@ import Category from "../category-card/category";
 
 export default function Day({ title, allTasks, setAllTasks, date }) {
   const taskArray = Object.values(allTasks);
+
   const selectedTasks = taskArray.filter((el) => {
     const taskDate = new Date(el.day);
+    console.log("check, ", taskDate.toDateString(), date.toDateString());
     return taskDate.toDateString() === date.toDateString();
   });
 

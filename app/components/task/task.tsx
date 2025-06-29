@@ -54,7 +54,7 @@ export default function Task({
   };
   const onCheck = (e) => {
     const checked = e.target.checked ? 1 : 0;
-    updateTask(el.name, checked, el.id, el.category, el.date);
+    updateTask(el.name, checked, el.id, el.category, el.day);
     const taskObj = { ...allTasks };
     taskObj[el.id].checked = checked;
     setAllTasks(taskObj);
