@@ -1,6 +1,7 @@
 import { deleteTask, updateTask } from "@/db/methods";
 import styles from "./task.module.css";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
+import { useCallback } from "react";
 
 export default function Task({
   el,
@@ -9,7 +10,6 @@ export default function Task({
   refProps,
   idx,
   tasks,
-  setTasks,
   allTasks,
   setAllTasks,
 }) {
@@ -20,7 +20,7 @@ export default function Task({
   };
   const setEdit = () => {
     if (editTask === null) {
-      setEditTask(idx);
+      setEditTask(el.id);
     }
   };
 
@@ -36,9 +36,16 @@ export default function Task({
       },
     });
 
-  if (!refProps) {
-    refProps = { ref: setNodeRef };
-  }
+  //This might not be correct
+  const setCombinedRef = useCallback(
+    (node) => {
+      if (refProps && refProps.ref) {
+        refProps.ref.current = node;
+      }
+      setNodeRef(node);
+    },
+    [refProps, setNodeRef]
+  );
 
   const style = transform
     ? {
@@ -47,7 +54,7 @@ export default function Task({
     : undefined;
   const remove = (editTask) => {
     deleteTask(el.id);
-    const newList = tasks.filter((_, i) => i !== idx);
+    const newList = tasks.filter((l) => l.id !== el.id);
     const taskObj = { ...allTasks };
     delete taskObj[el.id];
     setAllTasks(taskObj);
@@ -64,7 +71,7 @@ export default function Task({
     : styles.task;
   return (
     <div
-      {...refProps}
+      ref={setCombinedRef}
       key={el.id}
       className={className}
       onDoubleClick={setEdit}
@@ -81,8 +88,8 @@ export default function Task({
         onChange={onCheck}
         defaultChecked={el.checked === 1}
       />
-      {!(editTask === idx) && <div className={styles.label}>{el.name}</div>}
-      {editTask === idx && (
+      {!(editTask === el.id) && <div className={styles.label}>{el.name}</div>}
+      {editTask === el.id && (
         <input
           type="text"
           className={styles.taskInput}

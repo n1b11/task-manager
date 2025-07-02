@@ -1,0 +1,33 @@
+.displayArea{
+    display: flex;
+}
+
+
+
+.add{
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    border: 0px solid black;
+}
+.line{
+    width:2px; 
+    height: 40%;
+    background-color: var(--foreground);
+    margin: 5px;
+}
+
+.add:hover>.line{
+    background-color: gray;
+}
+
+.add:hover>.plus{
+    color: gray;
+    font-size: 30px;
+}
+.plus{
+    font-size: 30px;
+}

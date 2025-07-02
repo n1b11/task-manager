@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./week.module.css";
 import WeekCard from "../week-card/week";
 import Week from "../week/week";
+import WeekV2 from "../week/weekv2";
 
 interface weekViewProps {
   setAllTasks: (any) => void;
@@ -69,7 +70,7 @@ export default function WeekView({ allTasks, setAllTasks }: weekViewProps) {
           );
         })}
       {activeWeek != null && (
-        <Week
+        <WeekV2
           setActiveWeek={setActiveWeek}
           allTasks={allTasks}
           setAllTasks={setAllTasks}

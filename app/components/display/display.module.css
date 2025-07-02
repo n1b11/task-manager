@@ -126,3 +126,11 @@
     border-radius: 5px;
     box-sizing: border-box;
 }
+
+.title{
+    margin-left: 10px;
+}
+
+.componentContainer{
+    min-height: 200px;
+}
