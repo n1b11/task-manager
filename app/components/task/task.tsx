@@ -15,6 +15,15 @@ export default function Task({
 }) {
   const changeTask = (e) => {
     const newTasks = { ...allTasks };
+    const currentTask = newTasks[el.id];
+    updateTask(
+      e.target.value,
+      currentTask.checked,
+      currentTask.id,
+      currentTask.category,
+      currentTask.day
+    );
+
     newTasks[el.id].name = e.target.value;
     setAllTasks(newTasks);
   };
